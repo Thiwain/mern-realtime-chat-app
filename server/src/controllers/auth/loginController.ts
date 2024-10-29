@@ -1,10 +1,10 @@
 import { Request, Response, NextFunction } from "express";
-import {loginValidation} from "../validation/loginValidation";
+import {loginValidation} from "../../validation/loginValidation";
 import bcrypt from 'bcrypt';
 import { CookieOptions } from "express";
 import requestIp from 'request-ip';
-import UserModel from "../models/userModel";
-import {generateAccessToken, generateRefreshToken} from "../utils/jwtUtils";
+import UserModel from "../../models/userModel";
+import {generateAccessToken, generateRefreshToken} from "../../utils/jwtUtils";
 
 export const loginController = async (req: Request, res: Response, next: NextFunction) => {
     try {
@@ -26,8 +26,6 @@ export const loginController = async (req: Request, res: Response, next: NextFun
             message: 'Invalid email or password',
         });
     }
-
-
 
         const passwordIsMatch = await bcrypt.compare(password, foundUser.password);
         if (!passwordIsMatch) {

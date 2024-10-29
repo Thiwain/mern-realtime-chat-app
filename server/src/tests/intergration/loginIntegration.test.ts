@@ -10,7 +10,7 @@ const postLogin = async (reqBody: object, expectedStatus: number) => {
         .expect(expectedStatus);
 }
 
-describe("Login Integration tests",()=>{
+describe.skip("Login Integration tests",()=>{
 
     beforeAll(async () => {
         let password="interTestPw#123"

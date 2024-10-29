@@ -12,6 +12,8 @@ import {authLimiter} from "./middlewares/authLimiter";
 
 dotenv.config();
 
+connectDB();
+
 export const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -39,7 +41,6 @@ app.use('/api/v1/auth/', authLimiter, AuthRoutes);
 
 // const server = app.listen(PORT, () => {
 //     console.log(`Listening on port ${PORT}`);
-// connectDB();
 // });
 //
 // function gracefulShutdown() {

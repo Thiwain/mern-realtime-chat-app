@@ -2,7 +2,7 @@ import { Request, Response, NextFunction } from "express";
 import UserModel from "../../models/userModel";
 import bcrypt from 'bcrypt';
 import requestIp from 'request-ip';
-import {loginController} from "../../controllers/loginController";
+import {loginController} from "../../controllers/auth/loginController";
 import {generateAccessToken, generateRefreshToken} from "../../utils/jwtUtils";
 
 jest.mock("../../models/userModel");
