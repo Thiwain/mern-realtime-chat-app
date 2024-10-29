@@ -38,7 +38,7 @@ app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
-app.use('',MessageRoutes);
+app.use('/api/v1/chat/',MessageRoutes);
 // Routes
 
 // const server = app.listen(PORT, () => {
