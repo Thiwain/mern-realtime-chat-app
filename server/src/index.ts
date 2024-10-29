@@ -9,6 +9,9 @@ import useragent from 'express-useragent';
 import connectDB, { mongoDbCon } from './configs/setupDb';
 import AuthRoutes from "./routes/authRoutes";
 import {authLimiter} from "./middlewares/authLimiter";
+import MessageRoutes from "./routes/messageRoutes";
+import authenticate from "./middlewares/authenticate";
+import {globalLimiter} from "./middlewares/globalLimiter";
 
 dotenv.config();
 
@@ -37,6 +40,7 @@ app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
+app.use('/api/v1/chat/',globalLimiter,authenticate,MessageRoutes);
 // Routes
 
 // const server = app.listen(PORT, () => {
