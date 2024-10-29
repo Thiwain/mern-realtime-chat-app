@@ -1,11 +1,8 @@
 import mongoose, { Schema, Model,Document } from "mongoose";
 
 export interface ChatItem extends Document {
-    email: string;
-    password: string;
-    rcode: number;
-    role: string;
-    active: boolean;
+    sentBy: string;
+    message: string;
 }
 
 const chatSchema: Schema = new Schema(
