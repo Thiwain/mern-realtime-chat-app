@@ -10,6 +10,7 @@ import connectDB, { mongoDbCon } from './configs/setupDb';
 import AuthRoutes from "./routes/authRoutes";
 import {authLimiter} from "./middlewares/authLimiter";
 import MessageRoutes from "./routes/messageRoutes";
+import authenticate from "./middlewares/authenticate";
 
 dotenv.config();
 
@@ -38,7 +39,7 @@ app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
-app.use('/api/v1/chat/',MessageRoutes);
+app.use('/api/v1/chat/',authenticate,MessageRoutes);
 // Routes
 
 // const server = app.listen(PORT, () => {
