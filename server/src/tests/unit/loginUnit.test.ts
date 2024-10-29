@@ -23,7 +23,6 @@ describe.skip("loginController", () => {
                 rememberMe: true
             }
         };
-
         res = {
             status: jest.fn().mockReturnThis(),
             json: jest.fn(),

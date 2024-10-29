@@ -16,7 +16,7 @@ describe("Login Integration tests",()=>{
         let password="interTestPw#123"
         const hashedPassword = await HashPassword(password);
         try {
-            new UserModel({ email:'testEmail1@example.com', password: hashedPassword }).save();
+           await new UserModel({ email:'testEmail1@example.com', password: hashedPassword }).save();
         }catch(err) {
             console.error(err);
         }
@@ -27,16 +27,48 @@ describe("Login Integration tests",()=>{
             email: 'testEmail1@example.com',
             password: 'interTestPw#123',
         };
-        const reqBody = {
-            email: email,
-            password: password,
-        };
-        const response = await postLogin(reqBody, 200);
+        const response = await postLogin({email: email, password: password,}, 200);
         expect(response.body).toMatchObject({
             statusType: "success",
             message: "Login successful",
         });
-        expect(response.status).toBe(200);
+    });
+
+    test('should fail when invalid Email', async () => {
+        const { email, password } = {
+            email: 'testEmail1example.com',
+            password: 'interTestPw#123',
+        };
+        const response = await postLogin({email: email, password: password,}, 400);
+        expect(response.body).toMatchObject({
+            "status": 400,
+            "statusType": "error",
+            "message": "Invalid email address"
+        })
+    });
+
+    test('should fail when invalid password', async () => {
+        const { email, password } = {
+            email: 'testEmail1@example.com',
+            password: '0',
+        };
+        const response = await postLogin({email: email, password: password,}, 400);
+        expect(response.body).toMatchObject({
+            "statusType": "error",
+            "message": "Password must be at least 8 characters long"
+        })
+    });
+
+    test('should fail when user does not exist', async () => {
+        const { email, password } = {
+            email: 'testEmail2@example.com',
+            password: '123#Password',
+        };
+        const response = await postLogin({email: email, password: password,}, 401);
+        expect(response.body).toMatchObject({
+            statusType: 'error',
+            message: 'Invalid email or password',
+        })
     });
 
     afterAll(async () => {
