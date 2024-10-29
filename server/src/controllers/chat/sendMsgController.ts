@@ -14,7 +14,10 @@ export const sendMsgController = async (req:Request,res:Response)=>{
             });
         }
 
-        const {error}=messageValidation.validate(req.body);
+        const {error}=messageValidation.validate({
+            sentBy:userObj.email,
+            message:req.body.message,
+        });
         if (error) {
             return res.status(400).json({
                 status: 400,
