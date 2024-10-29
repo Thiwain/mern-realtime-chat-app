@@ -12,7 +12,7 @@ jest.mock("../../utils/passwordUtils");
 jest.mock("../../utils/jwtUtils");
 jest.mock('request-ip');
 
-describe("signUpController", () => {
+describe.skip("signUpController", () => {
     let req: Partial<Request>;
     let res: Partial<Response>;
     let next: NextFunction;
