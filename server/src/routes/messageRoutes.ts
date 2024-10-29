@@ -1,8 +1,8 @@
 import express, { Router } from 'express';
 import {sendMsgController} from "../controllers/chat/sendMsgController";
 
-const AuthRoutes: Router = express();
+const MessageRoutes: Router = express();
 
-AuthRoutes.post('/send', sendMsgController);
+MessageRoutes.post('/send', sendMsgController);
 
-export default AuthRoutes;
+export default MessageRoutes;
