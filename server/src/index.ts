@@ -12,6 +12,8 @@ import {authLimiter} from "./middlewares/authLimiter";
 
 dotenv.config();
 
+connectDB();
+
 export const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -37,25 +39,24 @@ app.options('*', cors(corsOptions));
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
 // Routes
 
-// const server = app.listen(PORT, () => {
-//     console.log(`Listening on port ${PORT}`);
-// connectDB();
-// });
-//
-// function gracefulShutdown() {
-//     console.log("Shutting down");
-//     server.close(async () => {
-//         console.log("HTTP server closed.");
-//         try {
-//             await mongoDbCon.close();
-//             console.log('MongoDB connection closed');
-//             process.exit(0);
-//         } catch (error) {
-//             console.error('Error during graceful shutdown:', error);
-//             process.exit(1);
-//         }
-//     });
-// }
-//
-// process.on("SIGTERM", gracefulShutdown);
-// process.on("SIGINT", gracefulShutdown);
+const server = app.listen(PORT, () => {
+    console.log(`Listening on port ${PORT}`);
+});
+
+function gracefulShutdown() {
+    console.log("Shutting down");
+    server.close(async () => {
+        console.log("HTTP server closed.");
+        try {
+            await mongoDbCon.close();
+            console.log('MongoDB connection closed');
+            process.exit(0);
+        } catch (error) {
+            console.error('Error during graceful shutdown:', error);
+            process.exit(1);
+        }
+    });
+}
+
+process.on("SIGTERM", gracefulShutdown);
+process.on("SIGINT", gracefulShutdown);
