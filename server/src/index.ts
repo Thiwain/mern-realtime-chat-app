@@ -15,8 +15,6 @@ import {globalLimiter} from "./middlewares/globalLimiter";
 
 dotenv.config();
 
-connectDB();
-
 export const app = express();
 
 const PORT = process.env.PORT || 3000;
@@ -40,9 +38,10 @@ app.options('*', cors(corsOptions));
 
 // Routes
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
-app.use('/api/v1/chat/',globalLimiter,authenticate,MessageRoutes);
+app.use('/api/v1/chat/',globalLimiter,MessageRoutes);
 // Routes
 
+// connectDB();
 // const server = app.listen(PORT, () => {
 //     console.log(`Listening on port ${PORT}`);
 // });
