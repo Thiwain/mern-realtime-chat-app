@@ -1,14 +1,12 @@
-
-const NotificationButton = () => {
-    const handleNotificationClick = () => {
+export const handleNotificationClick = (txtMsg:string) => {
         if (!("Notification" in window)) {
             alert("This browser does not support desktop notification");
         } else if (Notification.permission === "granted") {
-            showNotification();
+            showNotification(txtMsg);
         } else if (Notification.permission !== "denied") {
             Notification.requestPermission().then(permission => {
                 if (permission === "granted") {
-                    showNotification();
+                    showNotification(txtMsg);
                 } else {
                     alert("Notification permissions were denied.");
                 }
@@ -18,22 +16,16 @@ const NotificationButton = () => {
         }
     };
 
-    const showNotification = () => {
+    const showNotification = (txt:string) => {
         const notification = new Notification("Hello!", {
-            body: "This is your custom notification.",
-            icon: "https://via.placeholder.com/50" // Optional icon
+            body: txt,
+            icon: "client/public/notification.png"
         });
 
         notification.onclick = () => {
-            window.focus(); // Optional: bring the app back to focus on click
+            window.focus();
         };
     };
 
-    return (
-        <button onClick={handleNotificationClick}>
-            Send Notification
-        </button>
-    );
-};
 
-export default NotificationButton;
+
