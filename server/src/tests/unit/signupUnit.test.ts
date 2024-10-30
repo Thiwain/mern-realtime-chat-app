@@ -4,6 +4,7 @@ import UserModel from "../../models/userModel";
 import { signupValidation } from "../../validation/signupValidation";
 import { HashPassword } from "../../utils/passwordUtils";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwtUtils";
+// @ts-ignore
 import requestIp from 'request-ip';
 
 jest.mock("../../models/userModel");

@@ -1,5 +1,6 @@
 import {HashPassword} from "../../utils/passwordUtils";
 import UserModel, {UserItem} from "../../models/userModel";
+// @ts-ignore
 import request from "supertest";
 import {app} from "../../index";
 

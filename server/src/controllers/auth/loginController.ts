@@ -6,7 +6,7 @@ import requestIp from 'request-ip';
 import UserModel from "../../models/userModel";
 import {generateAccessToken, generateRefreshToken} from "../../utils/jwtUtils";
 
-export const loginController = async (req: Request, res: Response) => {
+export const loginController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { email, password, rememberMe } = req.body;
         const { error } = loginValidation.validate(req.body);
@@ -79,5 +79,6 @@ export const loginController = async (req: Request, res: Response) => {
         });
     } catch (err: any) {
         console.error(err);
+        return next(err);
     }
 };

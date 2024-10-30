@@ -1,6 +1,8 @@
 import { Request, Response, NextFunction } from "express";
 import UserModel from "../../models/userModel";
+// @ts-ignore
 import bcrypt from 'bcrypt';
+// @ts-ignore
 import requestIp from 'request-ip';
 import {loginController} from "../../controllers/auth/loginController";
 import {generateAccessToken, generateRefreshToken} from "../../utils/jwtUtils";
