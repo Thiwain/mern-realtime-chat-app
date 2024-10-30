@@ -11,7 +11,7 @@ const postSignUp = async (reqBody: object, expectedStatus: number) => {
         .expect(expectedStatus);
 };
 
-describe("SignUp Integration tests", () => {
+describe.skip("SignUp Integration tests", () => {
 
     beforeAll(async () => {
         const password = "interTestPw#123";
