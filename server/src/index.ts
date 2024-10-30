@@ -14,6 +14,7 @@ import authenticate from "./middlewares/authenticate";
 import {globalLimiter} from "./middlewares/globalLimiter";
 import WebSocket from 'ws';
 import validateUserController from "./controllers/auth/validateUserController";
+import {logoutController} from "./controllers/auth/logoutController";
 
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.options('*', cors(corsOptions));
 app.use('/api/v1/auth/', authLimiter, AuthRoutes);
 app.use('/api/v1/chat/',globalLimiter,authenticate,MessageRoutes);
 app.get('/api/v1/validate',globalLimiter, validateUserController);
+app.post('/api/v1/logout', logoutController);
 // Routes
 
 connectDB();
