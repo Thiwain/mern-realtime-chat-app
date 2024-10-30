@@ -3,6 +3,7 @@ import {sendMessage,loadMessage} from "../../api/services/chat.ts";
 import {handleNotificationClick} from "../../utils/handleNotificationClick.tsx";
 import {AuthContext} from "../../context/AuthContext.tsx";
 import ChatItem from "../ChatItem";
+import {logoutRequest} from "../../api/services/auth.ts";
 
 const styles = {
     scrollContainer: {
@@ -68,11 +69,23 @@ const Home = () => {
         }
     };
 
+    const handleLogout=async ()=>{
+        try {
+            await logoutRequest();
+            setTimeout(() => {
+                window.location.reload();
+            }, 200);
+        } catch (error) {
+            console.error('Error logging out', error);
+            alert('Failed to log out. Please try again.');
+        }
+    }
+
     return (
         <div>
             <span>
                 <label style={{ fontSize: '20px' }}>🏚️ <b>ChatRoom</b></label>&nbsp;&nbsp;&nbsp;
-                <input type="button" onClick={() => console.log('Logging out...')} value="⚠️ Logout" />
+                <input type="button" onClick={handleLogout} value="⚠️ Logout" />
             </span>
             <br />
             <hr />

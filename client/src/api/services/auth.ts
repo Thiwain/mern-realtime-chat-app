@@ -10,7 +10,7 @@ export const signupRequest = async (reqBody: any) => {
 };
 
 export const logoutRequest = async () => {
-    return axios.post('/v1/logout', {});
+    return axios.post('/v1/logout');
 };
 
 
