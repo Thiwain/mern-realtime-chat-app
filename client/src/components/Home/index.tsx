@@ -2,6 +2,7 @@ import {useContext, useEffect, useState} from 'react';
 import {sendMessage,loadMessage} from "../../api/services/chat.ts";
 import {handleNotificationClick} from "../../utils/handleNotificationClick.tsx";
 import {AuthContext} from "../../context/AuthContext.tsx";
+import ChatItem from "../ChatItem";
 
 const styles = {
     scrollContainer: {
@@ -16,6 +17,7 @@ const Home = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
+    // @ts-ignore
     const {user}=useContext(AuthContext);
 
     useEffect(() => {
@@ -77,20 +79,22 @@ const Home = () => {
             {/* @ts-ignore */}
             <div style={styles.scrollContainer}>
                 <ul>
-                    {messages.map((msg:any, index) => (
-                        <li key={index} style={{marginTop:'20px'}}>
-                            <button>{new Date(msg.createdAt).toLocaleTimeString()}</button>&nbsp;
-                            :&nbsp;<b style={{ color: 'black' }}>{msg.sentBy}</b>&nbsp;:&nbsp;{msg.message}
-                        </li>
+                    {messages.map((msg: any) => (
+                        <ChatItem
+                            key={msg.createdAt} // Use unique identifier if available
+                            createdAt={msg.createdAt}
+                            sentBy={msg.sentBy}
+                            message={msg.message}
+                        />
                     ))}
                 </ul>
             </div>
-            <hr />
+            <hr/>
             <div>
                 <span>
                     <input
                         type="text"
-                        style={{ width: '85%' }}
+                        style={{width: '85%'}}
                         value={newMessage}
                         onChange={(e) => setNewMessage(e.target.value)}
                     />
