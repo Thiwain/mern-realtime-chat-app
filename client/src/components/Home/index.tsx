@@ -1,6 +1,7 @@
-import { useEffect, useState } from 'react';
-import NotificationButton from './NotificationButton';
+import {useContext, useEffect, useState} from 'react';
 import {sendMessage,loadMessage} from "../../api/services/chat.ts";
+import {handleNotificationClick} from "../../utils/handleNotificationClick.tsx";
+import {AuthContext} from "../../context/AuthContext.tsx";
 
 const styles = {
     scrollContainer: {
@@ -15,6 +16,8 @@ const Home = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
 
+    const {user}=useContext(AuthContext);
+
     useEffect(() => {
         const ws = new WebSocket('ws://localhost:3000');
 
@@ -26,12 +29,12 @@ const Home = () => {
                 const receivedMessage = JSON.parse(event.data);
                 // @ts-ignore
                 setMessages((prevMessages) => [...prevMessages, receivedMessage]);
+                handleNotificationClick(receivedMessage.message);
             } catch (error) {
                 console.error("WebSocket message parsing error:", error);
             }
         };
 
-        // Load initial messages from the API
         loadMessage()
             .then((response) => {
                 if (response.status === 200) {
@@ -49,7 +52,7 @@ const Home = () => {
     }, []);
 
     const handleSendMessage = async () => {
-        const messageData = { sentBy: 'thiwainm@gmail.com', message: newMessage };
+        const messageData = { sentBy: user.email, message: newMessage };
         try {
             const response = await sendMessage(messageData);
             if (response.status === 201) {
@@ -69,7 +72,6 @@ const Home = () => {
                 <label style={{ fontSize: '20px' }}>🏚️ <b>ChatRoom</b></label>&nbsp;&nbsp;&nbsp;
                 <input type="button" onClick={() => console.log('Logging out...')} value="⚠️ Logout" />
             </span>
-            <NotificationButton />
             <br />
             <hr />
             {/* @ts-ignore */}
