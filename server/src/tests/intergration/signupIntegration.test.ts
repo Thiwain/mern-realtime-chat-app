@@ -1,3 +1,4 @@
+// @ts-ignore
 import request from "supertest";
 import { app } from "../../index";
 import UserModel from "../../models/userModel";

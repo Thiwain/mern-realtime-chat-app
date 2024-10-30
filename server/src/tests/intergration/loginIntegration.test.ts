@@ -1,5 +1,6 @@
 import {HashPassword} from "../../utils/passwordUtils";
 import UserModel, {UserItem} from "../../models/userModel";
+// @ts-ignore
 import request from "supertest";
 import {app} from "../../index";
 
@@ -10,7 +11,7 @@ const postLogin = async (reqBody: object, expectedStatus: number) => {
         .expect(expectedStatus);
 }
 
-describe.skip("Login Integration tests",()=>{
+describe("Login Integration tests",()=>{
 
     beforeAll(async () => {
         let password="interTestPw#123"

@@ -15,6 +15,7 @@
     ],
     "exclude": [
         "../../ChatRoom/server/node_modules",
-        "build"
+        "build",
+        "src/tests"
     ]
 }

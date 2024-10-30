@@ -1,11 +1,11 @@
-import { Request, Response, CookieOptions } from "express";
+import { Request, Response, NextFunction, CookieOptions } from "express";
 import { HashPassword } from "../../utils/passwordUtils";
 import { generateAccessToken, generateRefreshToken } from "../../utils/jwtUtils";
 import UserModel from "../../models/userModel";
 import requestIp from 'request-ip';
 import { signupValidation } from "../../validation/signupValidation";
 
-export const signUpController = async (req: Request, res: Response) => {
+export const signUpController = async (req: Request, res: Response, next: NextFunction) => {
     try {
         const { error } = signupValidation.validate(req.body);
         if (error) {
@@ -67,5 +67,6 @@ export const signUpController = async (req: Request, res: Response) => {
 
     } catch (err: any) {
         console.error(err);
+        return next(err);
     }
 };
