@@ -41,8 +41,8 @@ app.use('/api/v1/auth/', authLimiter, AuthRoutes);
 
 const wss = new WebSocketServer({ noServer: true });
 const MessageRoutes = setupMessageRoutes(wss);
-app.use('/api/v1/chat/', globalLimiter, authenticate, MessageRoutes);
 
+app.use('/api/v1/chat/', globalLimiter, authenticate, MessageRoutes);
 app.get('/api/v1/validate', globalLimiter, validateUserController);
 app.post('/api/v1/logout', logoutController);
 
@@ -63,7 +63,6 @@ function gracefulShutdown() {
     server.close(async () => {
         console.log("HTTP server closed.");
         wss.clients.forEach((client) => client.close());
-
         try {
             await mongoDbCon.close();
             console.log('MongoDB connection closed');
