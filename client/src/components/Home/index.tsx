@@ -1,25 +1,17 @@
-import {useContext, useEffect, useState} from 'react';
-import {sendMessage,loadMessage} from "../../api/services/chat.ts";
-import {handleNotificationClick} from "../../utils/handleNotificationClick.tsx";
-import {AuthContext} from "../../context/AuthContext.tsx";
-import ChatItem from "../ChatItem";
-import {logoutRequest} from "../../api/services/auth.ts";
-
-const styles = {
-    scrollContainer: {
-        height: '80vh',
-        overflowY: 'auto',
-        border: '1px solid #ccc',
-        padding: '10px',
-    },
-};
+import { useContext, useEffect, useState } from 'react';
+import { sendMessage, loadMessage } from "../../api/services/chat";
+import { handleNotificationClick } from "../../utils/handleNotificationClick";
+import { AuthContext } from "../../context/AuthContext";
+import ChatItem, {ChatItemInterface} from "../ChatItem";
+import { Box, Button, TextField, List } from "@mui/material";
+import Header from "../Header";
 
 const Home = () => {
     const [messages, setMessages] = useState([]);
     const [newMessage, setNewMessage] = useState('');
-
-    // @ts-ignore
-    const {user}=useContext(AuthContext);
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-expect-error
+    const { user } = useContext(AuthContext);
 
     useEffect(() => {
         const ws = new WebSocket('ws://localhost:3000');
@@ -30,7 +22,8 @@ const Home = () => {
         ws.onmessage = (event) => {
             try {
                 const receivedMessage = JSON.parse(event.data);
-                // @ts-ignore
+                // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+                // @ts-expect-error
                 setMessages((prevMessages) => [...prevMessages, receivedMessage]);
                 handleNotificationClick(receivedMessage.message);
             } catch (error) {
@@ -69,54 +62,64 @@ const Home = () => {
         }
     };
 
-    const handleLogout=async ()=>{
-        try {
-            await logoutRequest();
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
-        } catch (error) {
-            console.error('Error logging out', error);
-            alert('Failed to log out. Please try again.');
-        }
-    }
-
     return (
-        <div>
-            <span>
-                <label style={{ fontSize: '20px' }}>🏚️ <b>ChatRoom</b></label>&nbsp;&nbsp;&nbsp;
-                <input type="button" onClick={handleLogout} value="⚠️ Logout" />
-            </span>
-            <br />
-            <hr />
-            {/* @ts-ignore */}
-            <div style={styles.scrollContainer}>
-                <ul>
-                    {messages.map((msg: any) => (
+        <Box display="flex" flexDirection="column" height="100vh">
+            {/* Header */}
+            <Header/>
+
+            {/* Messages Container */}
+            <Box
+                sx={{
+                    flexGrow: 1,
+                    overflowY: 'auto',
+                    p: 2,
+                }}
+            >
+                <List>
+                    {messages.map((msg:ChatItemInterface) => (
                         <ChatItem
-                            key={msg.createdAt} // Use unique identifier if available
+                            key={Number(msg.createdAt)}
                             createdAt={msg.createdAt}
                             sentBy={msg.sentBy}
                             message={msg.message}
                         />
                     ))}
-                </ul>
-            </div>
-            <hr/>
-            <div>
-                <span>
-                    <input
-                        type="text"
-                        style={{width: '85%'}}
-                        value={newMessage}
-                        onChange={(e) => setNewMessage(e.target.value)}
-                    />
-                    &nbsp;&nbsp;
-                    <input type="button" value={'send 🚀'} style={{ width: '13%' }} onClick={handleSendMessage} />
-                </span>
-            </div>
-            <hr />
-        </div>
+                </List>
+            </Box>
+
+            {/* Input and Send Button */}
+            <Box
+                component="form"
+                display="flex"
+                alignItems="center"
+                p={2}
+                sx={{
+                    position: 'fixed',
+                    bottom: 0,
+                    left: 0,
+                    right: 0,
+                    backgroundColor: 'background.paper',
+                    borderTop: '1px solid #ccc',
+                }}
+            >
+                <TextField
+                    fullWidth
+                    variant="outlined"
+                    placeholder="Type your message..."
+                    value={newMessage}
+                    onChange={(e) => setNewMessage(e.target.value)}
+                    sx={{ mr: 2 }}
+                />
+                <Button
+                    variant="contained"
+                    color="primary"
+                    onClick={handleSendMessage}
+                    sx={{ whiteSpace: "nowrap" }}
+                >
+                    Send 🚀
+                </Button>
+            </Box>
+        </Box>
     );
 };
 

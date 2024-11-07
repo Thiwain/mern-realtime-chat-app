@@ -1,29 +1,46 @@
 import { useContext, useEffect, useState } from "react";
-import { AuthContext } from "../../context/AuthContext.tsx";
+import { AuthContext } from "../../context/AuthContext";
+import {  Typography, Button, ListItem } from "@mui/material";
 
-interface ChatItemInterface {
+export interface ChatItemInterface {
     key: number;
     createdAt: string;
     sentBy: string;
     message: string;
 }
 
-const ChatItem = (props: ChatItemInterface) => {
-    // @ts-ignore
-    const { user } = useContext(AuthContext);
-    const [color, setColor] = useState('green');
+const ChatItem = ({ key, createdAt, sentBy, message }: ChatItemInterface) => {
+    const { user }:any = useContext(AuthContext);
+    const [color, setColor] = useState("green");
 
     useEffect(() => {
-        setColor(props.sentBy === user.email ? 'blue' : 'green');
-    }, [props.sentBy, user.email]);
+        setColor(sentBy === user.email ? "blue" : "green");
+    }, [sentBy, user.email]);
 
     return (
-        <li key={props.key} style={{ marginTop: '20px' }}>
-            <button>{new Date(props.createdAt).toLocaleTimeString()}</button>
-            &nbsp;:&nbsp;
-            <b style={{ color }}>{props.sentBy}</b>
-            &nbsp;:&nbsp;{props.message}
-        </li>
+        <ListItem
+            key={key}
+            sx={{
+                mt: 2,
+                display: "flex",
+                alignItems: "center",
+                padding: 0,
+            }}
+        >
+            <Button
+                variant="text"
+                color="inherit"
+                sx={{ minWidth: 0, color: "gray", textTransform: "none" }}
+            >
+                {new Date(createdAt).toLocaleTimeString()}
+            </Button>
+            <Typography component="span" sx={{ mx: 1, color: color, fontWeight: "bold" }}>
+                {sentBy}
+            </Typography>
+            <Typography component="span" sx={{ color: "text.primary" }}>
+                : {message}
+            </Typography>
+        </ListItem>
     );
 };
 
