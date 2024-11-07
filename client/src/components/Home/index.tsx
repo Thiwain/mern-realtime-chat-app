@@ -3,9 +3,8 @@ import { sendMessage, loadMessage } from "../../api/services/chat";
 import { handleNotificationClick } from "../../utils/handleNotificationClick";
 import { AuthContext } from "../../context/AuthContext";
 import ChatItem, {ChatItemInterface} from "../ChatItem";
-import { logoutRequest } from "../../api/services/auth";
-import { Box, Typography, Button, TextField, List } from "@mui/material";
-import {stringify} from "node:querystring";
+import { Box, Button, TextField, List } from "@mui/material";
+import Header from "../Header";
 
 const Home = () => {
     const [messages, setMessages] = useState([]);
@@ -63,34 +62,10 @@ const Home = () => {
         }
     };
 
-    const handleLogout = async () => {
-        try {
-            await logoutRequest();
-            setTimeout(() => {
-                window.location.reload();
-            }, 200);
-        } catch (error) {
-            console.error('Error logging out', error);
-            alert('Failed to log out. Please try again.');
-        }
-    };
-
     return (
         <Box display="flex" flexDirection="column" height="100vh">
             {/* Header */}
-            <Box display="flex" alignItems="center" p={2} sx={{ borderBottom: '1px solid #ccc' }}>
-                <Typography variant="h5" fontWeight="bold">
-                    🏚️ ChatRoom
-                </Typography>
-                <Button
-                    onClick={handleLogout}
-                    variant="outlined"
-                    color="error"
-                    sx={{ ml: 3 }}
-                >
-                    ⚠️ Logout
-                </Button>
-            </Box>
+            <Header/>
 
             {/* Messages Container */}
             <Box
